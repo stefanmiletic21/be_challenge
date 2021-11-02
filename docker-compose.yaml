@@ -8,3 +8,31 @@ services:
       POSTGRES_PASSWORD: test
     ports:
       - "5432:5432"
+  server-worker:
+    build:
+      context: .
+      dockerfile: ./docker/server-worker/Dockerfile
+    depends_on:
+      - "database"
+    environment:
+      POSTGRES_DB: eth
+      POSTGRES_USER: test
+      POSTGRES_PASS: test
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: "database"
+      LAST_HOUR_TO_UPDATE: 1577836800
+  server-api:
+    build:
+      context: .
+      dockerfile: ./docker/server-api/Dockerfile
+    depends_on:
+      - "server-worker"
+    environment:
+      POSTGRES_DB: eth
+      POSTGRES_USER: test
+      POSTGRES_PASS: test
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: "database"
+    ports:
+      - "8080:8080"
+
