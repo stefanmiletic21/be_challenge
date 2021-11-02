@@ -1,11 +1,11 @@
 package connectors
 
 import (
-    "database/sql"
-    "fmt"
-    _ "github.com/lib/pq"
-    "os"
-    "strconv"
+	"database/sql"
+	"fmt"
+	_ "github.com/lib/pq"
+	"os"
+	"strconv"
 )
 
 type dbConnector struct {
@@ -43,17 +43,22 @@ func (db *dbConnector) Close() {
 	db.conn.Close()
 }
 
-func (db *dbConnector) Exec(query string) (err error){
+func (db *dbConnector) Exec(query string) (err error) {
 	_, err = db.conn.Exec(query)
 	return err
 }
 
-func (db *dbConnector) QueryRow(query string) (row *sql.Row){
+func (db *dbConnector) QueryRow(query string) (row *sql.Row) {
 	row = db.conn.QueryRow(query)
 	return
 }
 
+func (db *dbConnector) Query(query string) (rows *sql.Rows, err error) {
+	rows, err = db.conn.Query(query)
+	return
+}
+
 func NewDBConnector() (db *dbConnector, err error) {
-    db, err = (&dbConnector{}).initDB()
-    return
+	db, err = (&dbConnector{}).initDB()
+	return
 }

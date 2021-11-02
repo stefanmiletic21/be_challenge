@@ -17,12 +17,12 @@ func (ms *MigrationService) initMigrationService(provider WorkerDataProvider) *M
 	return ms
 }
 
-func (ms *MigrationService) updateCurrentHour() error {
-	return ms.dataProvider.UpdateHour(time.Now().Truncate(time.Hour).Add(1 * time.Hour).Unix())
-}
-
 func NewMigrationService(provider WorkerDataProvider) *MigrationService {
 	return (&MigrationService{}).initMigrationService(provider)
+}
+
+func (ms *MigrationService) updateCurrentHour() error {
+	return ms.dataProvider.UpdateHour(time.Now().Truncate(time.Hour).Add(1 * time.Hour).Unix())
 }
 
 func (ms *MigrationService) Start() {
@@ -39,13 +39,13 @@ func (ms *MigrationService) Start() {
 	wg.Add(1)
 	// go back in time and calculate expenses for the past
 	go func() {
-        defer wg.Done()
+		defer wg.Done()
 
-        // limit of how far in past we want it to go
+		// limit of how far in past we want it to go
 		lastHourToUpdateString := os.Getenv("LAST_HOUR_TO_UPDATE")
 		lastHourToUpdate, err := strconv.Atoi(lastHourToUpdateString)
 		if err != nil {
-		    fmt.Println(err)
+			fmt.Println(err)
 			return
 		}
 

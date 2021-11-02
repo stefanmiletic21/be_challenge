@@ -1,11 +1,12 @@
 package data_providers
 
 import (
-    "database/sql"
+	"database/sql"
 )
 
 type dataSource interface {
-    Close()
-    Exec(query string)(error)
-    QueryRow(query string) *sql.Row
+	Close()
+	Exec(query string) error
+	QueryRow(query string) *sql.Row
+	Query(query string) (*sql.Rows, error)
 }
